@@ -1,0 +1,28 @@
+input {
+  beats {
+    port => 5044
+  }
+}
+
+# The filter part of this file is commented out to indicate that it
+# is optional.
+# filter {
+#
+# }
+
+output {
+   
+  stdout {
+    codec => rubydebug
+  }
+ 
+  # Sending properly parsed log events to elasticsearch
+  elasticsearch {
+    hosts => ["elasticsearch:9200"]
+    user => "elastic"
+    password => "changeme"
+    manage_template => false
+    index => "%{[@metadata][beat]}-%{[@metadata][version]}-%{+YYYY.MM.dd}"
+  }
+}
+
